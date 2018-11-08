@@ -1,14 +1,14 @@
 ## SI 206 F18 - Project 2
 
 ## COMMENT HERE WITH:
-## Your name:
+## Your name: Jeongwoo KO
 ## Anyone you worked with on this project and how you worked together
 ## You can not share code, but can share ideas
 ###########
 
 ## Import statements
 import unittest
-import requests
+#import requests
 import re
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
@@ -19,6 +19,11 @@ import ssl
 ## Grab the headlines from the "Most Read" section
 ## and return them in a list
 def grab_headlines(soup):
+
+    title = soup.find_all('href')
+
+    print(title.soup.text)
+    
     
     # get the most read div
     
@@ -28,7 +33,7 @@ def grab_headlines(soup):
     
     # return the headlines
 
-    pass
+    
 
 
 ## PART 2 Complete a function called get_headline_dict. It will take a soup object and return a dictionary
@@ -96,7 +101,7 @@ def getSoupObjFromFile(fileName):
     return soup
 
 # testing on live urls - remove the string comments to run this 
-"""
+'''
 soup = getSoupObjFromURL("https://www.michigandaily.com/section/news")
 print(grab_headlines(soup))
 hDict = get_headline_dict(soup)
@@ -107,7 +112,7 @@ for key, value in hDict.items():
     print(tuple)
 #nDict = find_mich_stuff(hDict) # for extra credit
 #print(nDict)
-"""
+'''
 
 # Test using unittests and saved pages
 class TestP2(unittest.TestCase):
@@ -140,3 +145,4 @@ class TestP2(unittest.TestCase):
     """
 
 unittest.main(verbosity=2)
+
