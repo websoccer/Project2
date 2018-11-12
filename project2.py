@@ -20,13 +20,29 @@ import ssl
 ## and return them in a list
 def grab_headlines(soup):
 
-    title = soup.find_all('href')
+    container = soup.find(class_="view view-most-read view-id-most_read view-display-id-panel_pane_1 view-dom-id-99658157999dd0ac5aa62c2b284dd266")
+    headlines = []
+    contents = container.find_all('a')
 
-    print(title.soup.text)
-    
+    for content in contents:
+        headline = content.text
+        headlines.append(headline)
+    print(headlines)
+    return headlines    
+
+'''
+<div class="view view-most-read view-id-most_read view-display-id-panel_pane_1 view-dom-id-99658157999dd0ac5aa62c2b284dd266">
+  <ol><li><a href="/section/community-affairs/broken-record-student-survivor-navigates-painful-reporting-process">Broken Record: Student survivor navigates painful reporting process</a></li>
+<li><a href="/section/gymnastics/assistant-women%E2%80%99s-gymnastics-coach-resigns-after-charge-misconduct">Assistant women’s gymnastics coach resigns after charge of obscene conduct with gymnast</a></li>
+<li><a href="/section/business/ann-arbor-pieology-shuts-down-because-%E2%80%9Cunfortunate-circumstances%E2%80%9D">Ann Arbor Pieology shuts down because of “unfortunate circumstances”</a></li>
+<li><a href="/section/mic/white-men-who-told-me-they-%E2%80%9Cprefer%E2%80%9D-white-women">To the white men who told me that they “prefer” white women</a></li>
+<li><a href="/section/viewpoints/lucy-peterson-i-declined-write-letter-recommendation-study-abroad-israel-who-i-am">Op-Ed: Why I declined to write a letter of recommendation  </a></li>
+</ol>  
+  </div>
+ '''   
     
     # get the most read div
-    
+      
     # get the ordered list from that div
     
     # get the links from the ordered list div
@@ -41,6 +57,21 @@ def grab_headlines(soup):
 ## INPUT: soup - the soup object
 ## OUTPUT: Return - a dictionary with each story headline as the key and the story url as the value
 def get_headline_dict(soup):
+    stories = soup.find(class_="storywrap")
+    storydict = {}
+    story_div = stories.find_all('a')
+
+    for story in story_div:
+        urlvalue = story.get("href", None)
+        newurl = urlvalue.rstrip()
+        headkey = story.text
+        newhead = headkey.rstrip()
+        storydict[newhead] = newurl
+        print(storydict)
+
+    # print(storydict)
+    return storydict
+
     
     # create the empty dictionary
     
@@ -52,7 +83,7 @@ def get_headline_dict(soup):
     
     # set the dictionary key to the headline and the url as the value
 
-    pass
+    
 
 
 ## PART 3 Define a function called get_page_info. It will take a soup object for a story
@@ -94,7 +125,7 @@ def getSoupObjFromURL(url):
 
 def getSoupObjFromFile(fileName):
     """ return a soup object from the file with the passed fileName"""
-    file = open(fileName, 'r')
+    file = open(fileName, 'r', encoding="utf-8")
     text = file.read().strip()
     file.close()
     soup = BeautifulSoup(text, "html.parser")
@@ -127,7 +158,7 @@ class TestP2(unittest.TestCase):
 
     def test_get_headline_dict(self):
         dict = get_headline_dict(self.soup)
-        url = dict[' Dialogues on Diversity holds discussion on microaggressions, accountability ']
+        url = dict['Dialogues on Diversity holds discussion on microaggressions, accountability']
         self.assertEqual(len(dict.items()), 19)
         self.assertEqual(url,'https://www.michigandaily.com/section/campus-life/diversity-sciences')
 
