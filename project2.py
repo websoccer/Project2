@@ -57,33 +57,30 @@ def grab_headlines(soup):
 ## INPUT: soup - the soup object
 ## OUTPUT: Return - a dictionary with each story headline as the key and the story url as the value
 def get_headline_dict(soup):
-    stories = soup.find(class_="storywrap")
-    storydict = {}
-    story_div = stories.find_all('a')
-
-    for story in story_div:
-        print(story)
-        urlvalue = story.get("href", None)
-        newurl = urlvalue.rstrip()
-        headkey = story.text
-        newhead = headkey.rstrip()
-        print(newhead)
-        storydict[newhead] = newurl
-        #print(storydict)
-
-    # print(storydict)
-    return storydict
-
     
     # create the empty dictionary
+    storydict = {}
     
     # get the story wrap divs
-    
-    # get the short headline iskipped
-    
-    # find the link in headline div
-    
-    # set the dictionary key to the headline and the url as the value
+    story_div = soup.find("div", class_="leftside")
+    storywrap = story_div.find_all("div", class_="storywrap")
+    # get the short headline
+    for head in storywrap:
+        stories = head.find("div", class_="views-field views-field-field-short-headline")
+        story = stories.find("div", class_="field-content")
+        afind = story.find("a")
+        # find the link in headline div
+        urlvalue = afind.get("href", None)
+        newurl = urlvalue.strip()
+        # set the dictionary key to the headline and the url as the value
+        headkey = afind.text
+        newhead = headkey.strip()
+        storydict[newhead] = newurl 
+
+    #print(storydict)
+    print(storydict)
+    return storydict
+
 
     
 
