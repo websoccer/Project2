@@ -62,12 +62,14 @@ def get_headline_dict(soup):
     story_div = stories.find_all('a')
 
     for story in story_div:
+        print(story)
         urlvalue = story.get("href", None)
         newurl = urlvalue.rstrip()
         headkey = story.text
         newhead = headkey.rstrip()
+        print(newhead)
         storydict[newhead] = newurl
-        print(storydict)
+        #print(storydict)
 
     # print(storydict)
     return storydict
@@ -77,7 +79,7 @@ def get_headline_dict(soup):
     
     # get the story wrap divs
     
-    # get the short headline
+    # get the short headline iskipped
     
     # find the link in headline div
     
@@ -93,41 +95,25 @@ def get_headline_dict(soup):
 ## OUTPUT: Return - a tuple with the title, author, date, and number of paragraphs
 def get_page_info(soup):
     
-    page = soup.find(class_="inside")
+    title1 = soup.find_all("div", class_="pane-content")
+    ti = title1[0].text.strip("\n")
     
-    title = page.find('h2')
-    date = page.find('div', class_="panel-pane pane-node-created")
-    author = page.find('a')
-    lop = []
-    for p in page.find_all('p'):
-        sp = para.get("href", None)
-        lop.append(sp)
-    numOfpara = len(lop)
     
-    storytuples = (title.text, date.text, author.text, numbOfpara)
-    # get the title
-    '''
-    for t in page.find_all("h2"):
-        title = t.text
-        print(title)
+    date1 = soup.find('div', class_="panel-pane pane-node-created")
+    date = date1.find('div', class_="pane-content")
+    day = date.text
     
-    # get the date
-    for d in page.find_all(class_="panel-pane pane-node-created"):
-        date = d.text
- 
-    # get the author
-    for a in page.find_all(class_="link"):
-        a2 = a.find('a')
-        author = a2.text
-    author = author
-    # get the number of paragraphs
-    lop = []
-    for p in page.find_all('p'):
-        sp = para.get("href", None)
-        lop.append(sp)
+    author2 = soup.find('div', class_="link")
+    author = author2.find('a')
+    au = author.text
     
-    numOfpara = len(lop)
-    '''
+    para = soup.find("div", class_="field field-name-body field-type-text-with-summary field-label-hidden")
+    paras = para.find_all('p')
+    #print(paras)
+    numOfpara = len(paras)
+    
+    storytuples = (ti, day, au, numOfpara)
+
     print(storytuples)
     
     # return the tuple
