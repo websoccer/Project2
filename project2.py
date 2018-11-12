@@ -93,17 +93,47 @@ def get_headline_dict(soup):
 ## OUTPUT: Return - a tuple with the title, author, date, and number of paragraphs
 def get_page_info(soup):
     
+    page = soup.find(class_="inside")
+    
+    title = page.find('h2')
+    date = page.find('div', class_="panel-pane pane-node-created")
+    author = page.find('a')
+    lop = []
+    for p in page.find_all('p'):
+        sp = para.get("href", None)
+        lop.append(sp)
+    numOfpara = len(lop)
+    
+    storytuples = (title.text, date.text, author.text, numbOfpara)
     # get the title
+    '''
+    for t in page.find_all("h2"):
+        title = t.text
+        print(title)
     
     # get the date
-    
+    for d in page.find_all(class_="panel-pane pane-node-created"):
+        date = d.text
+ 
     # get the author
-    
+    for a in page.find_all(class_="link"):
+        a2 = a.find('a')
+        author = a2.text
+    author = author
     # get the number of paragraphs
+    lop = []
+    for p in page.find_all('p'):
+        sp = para.get("href", None)
+        lop.append(sp)
+    
+    numOfpara = len(lop)
+    '''
+    print(storytuples)
     
     # return the tuple
+    return storytuples
 
-    pass
+    
 
 ## Extra Credit
 ## INPUT: the dictionary that was returned from part 2
